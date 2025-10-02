@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Exercise 49 - Online Classified</title>
+    <style>
+        body {
+            background-color: lightcyan;
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            color: red;
+        }
+        form {
+            width: 700px;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid blue;
+            background-color: #E0FFFF;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .buttons input {
+            margin: 0 20px;
+            border: none;
+            background: none;
+            font-size: 14pt;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <h2>Online Classifieds Search Form</h2>
+        <hr>
+        <p><b>1) Search for a classified in the following sections:</b></p>
+        <input type="radio" name="section" id="Employment"><label for="Employment">Employment</label>
+        <input type="radio" name="section" id="Personal"><label for="Personal">Personal</label>
+        <input type="radio" name="section" id="For Sale"><label for="For Sale">For Sale</label>
+        <input type="radio" name="section" id="Miscellaneous"><label for="Miscellaneous">Miscellaneous</label>
+        <input type="radio" name="section" id="Housing"><label for="Housing">Housing</label>
+        <input type="radio" name="section" id="All of the above"><label for="All of the above">All of the above</label>
+
+        <p><b>2) Search the following publications:</b></p>
+        <input type="checkbox" id="Midwest"><label for="Midwest">Midwest Times</label>
+        <input type="checkbox" id="Modern"><label for="Modern">Modern News</label>
+        <input type="checkbox" id="Today"><label for="Today">Employment Today <br></label>
+        <input type="checkbox" id="Great"><label for="Great">Great Lakes Classifieds</label>
+        <input type="checkbox" id="Middleton"><label for="Middleton">Middleton Daily</label>
+        <input type="checkbox" id="Cashtown"><label for="Cashtown">Cashtown Daily News</label>
+
+        <p><b>3) From to</b></p>
+        <input type="text" placeholder="mm/dd/yy"> 
+        to 
+        <input type="text" placeholder="mm/dd/yy">
+
+        <p><b>4) Enter a few keywords to describe the classified.</b></p>
+        <input type="text" style="width: 95%;">
+
+        <p><b>5) Click one of the options below:</b></p>
+        <div class="buttons">
+            <button type="submit">
+                <img src="/Exercise 49/Search.gif" alt="Search">
+            </button>
+            <button type="button" onclick="alert('This is help page (optional)');">
+                <img src="/Exercise 49/Help.gif" alt="Help">
+            </button>            
+            <button type="reset">
+                <img src="/Exercise 49/Cancel.gif" alt="Cancel">
+            </button>
+        </div>
+    </form>
+</body>
+</html>
