@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Change color - Huỳnh Tấn Phát</title>
+        <script>
+            function change_color(value)
+            {
+                document.getElementById("div_color").style=
+                "width: 100%; height: 50px; background-color:"+value
+            }
+            function change_image(value)
+            {
+                avatar=document.getElementById("avatar")
+                avatar.setAttribute("src","images/"+value)
+            }
+        </script>
+    </head>
+    <body>
+        <form name="frm_color">
+            <select name="combo_color" onchange="change_color(this.value)">
+                <option value="blue">Xanh lè</option>
+                <option value="red">Đỏ lét</option>
+                <option value="yellow">Vàng khè</option>
+            </select>
+            <div id="div_color" style="width: 100%; height: 50px; background-color: blue;">
+
+            </div>
+        </form>
+        <form name="frm_image">
+            <select name="combo_image" onchange="change_image(this.value)">
+                <option value="LVB1.jpg">Ông Obama</option>
+                <option value="LVB2.jpg">Ông Putin</option>
+                <option value="LVB3.jpg">Ông Kin</option>
+                <option value="LVB4.jpg">Ông Tập</option>
+            </select>
+            <br/>
+            <img id="avatar" src="Images/LVB1.jpg"
+        </form>
+    </body>
+</html>
