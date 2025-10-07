@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <title>Exercise 50 - Huỳnh Tấn Phát</title>
+        <meta charset="UTF-8">
+    </head>
+    <body style="background-color: #ccf7f7; font-family: Arial, sans-serif;">
+
+        <div style="text-align: center; margin-bottom: 10px;">
+            <img src="/Exercise 50/DeLong.jpg" alt="DeLong Enterprises">
+        </div>
+
+        <h2 style="text-align: center;">Travel Expense Report</h2>
+        <hr>
+
+        <form onsubmit="alert('Form submitted!'); return false;">
+            <table>
+                <tr>
+                    <td>1) <label for="firstname">First Name:</label></td>
+                    <td><input type="text" name="firstname" id="firstname"></td>
+                    <td><label for="lastname">Last Name:</label></td>
+                    <td><input type="text" name="lastname" id="lastname"></td>
+                </tr>
+
+                <tr>
+                    <td>2) <label for="ssn">Social Security Number:</label></td>
+                    <td><input type="text" name="ssn" id="ssn"></td>
+                </tr>
+
+                <tr>
+                    <td>3) <label for="department">Department:</label></td>
+                    <td>
+                        <select name="department" id="department">
+                            <option>Accounting</option>
+                            <option>HR</option>
+                            <option>IT</option>
+                            <option>Sales</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>4) <label for="purpose">Describe the purpose of your trip:</label></td>
+                    <td colspan="3">
+                        <textarea name="purpose" id="purpose" rows="3" cols="50"></textarea>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <p>5) Itemize your travel expenses</p>
+            <table border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="mm/dd/yy"></td>
+                    <td><input type="text"></td>
+                    <td>
+                        <select>
+                            <option>Meal</option>
+                            <option>Hotel</option>
+                            <option>Transport</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="mm/dd/yy"></td>
+                    <td><input type="text"></td>
+                    <td>
+                        <select>
+                            <option>Meal</option>
+                            <option>Hotel</option>
+                            <option>Transport</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="mm/dd/yy"></td>
+                    <td><input type="text"></td>
+                    <td>
+                        <select>
+                            <option>Meal</option>
+                            <option>Hotel</option>
+                            <option>Transport</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" placeholder="mm/dd/yy"></td>
+                    <td><input type="text"></td>
+                    <td>
+                        <select>
+                            <option>Meal</option>
+                            <option>Hotel</option>
+                            <option>Transport</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                </tr>
+            </table>
+
+            <br>
+            <!-- Receipts -->
+            <p>6) Have you submitted your receipts?
+                <input type="radio" name="receipts" id="yes"><label for ="yes">Yes</label>
+                <input type="radio" name="receipts" id="no"><label for ="no">No</label>
+            </p>
+
+            <!-- Buttons -->
+            <input type="submit" value="Submit travel expenses">
+            <input type="reset" value="Reset">
+        </form>
+
+        <p style="font-size: 12px; margin-top: 10px;">
+            Questions? Contact Debbie Larson in Accounting (ext. 2150).
+        </p>
+    </body>
+</html>
