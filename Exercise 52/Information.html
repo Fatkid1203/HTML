@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>Information - Huỳnh Tấn Phát</title>
+        <script type="text/javascript">
+            function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+                    vars[key] = decodeURIComponent(value.replace(/\+/g, " "));
+                });
+                return vars;
+            }
+
+            function show_data() {
+                var data = getUrlVars();
+                document.getElementById("fullname").innerText = data["fullname"];
+                document.getElementById("email").innerText = data["email"];
+                document.getElementById("send").innerText = data["send"];
+                document.getElementById("title").innerText = data["title"];
+                document.getElementById("content").innerText = data["content"];
+            }
+        </script>
+    </head>
+    <body onload="show_data()">
+        <h3>Contact Information</h3>
+        <table border="1" cellpadding="5">
+            <tr>
+                <td>Full Name</td>
+                <td id="fullname">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Send to</td>
+                <td id="send">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td id="title">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td id="content">&nbsp;</td>
+            </tr>
+        </table>
+    </body>
+</html>

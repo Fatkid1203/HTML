@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>Exercise 53 - Product GET - Huỳnh Tấn Phát</title>
+  </head>
+  <body>
+    <h3>List of Products</h3>
+    <form name="frm_product" action="result.html" method="get">
+      <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+          <th>Part Number</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Item total</th>
+        </tr>
+        <tr>
+          <td>C112</td>
+          <td>Mouse</td>
+          <td id="p1">19.95</td>
+          <td><input type="text" name="qty1" id="qty1" size="5"/></td>
+          <td><input type="text" name="item1" id="item1" size="8" readonly/></td>
+        </tr>
+        <tr>
+          <td>B124</td>
+          <td>Keyboard US</td>
+          <td id="p2">29.95</td>
+          <td><input type="text" name="qty2" id="qty2" size="5"/></td>
+          <td><input type="text" name="item2" id="item2" size="8" readonly/></td>
+        </tr>
+        <tr>
+          <td>U125</td>
+          <td>USB KingMax</td>
+          <td id="p3">39.95</td>
+          <td><input type="text" name="qty3" id="qty3" size="5"/></td>
+          <td><input type="text" name="item3" id="item3" size="8" readonly/></td>
+        </tr>
+        <tr>
+          <td colspan="4" align="right">Total:</td>
+          <td><input type="text" name="total" id="total" size="8" readonly/></td>
+        </tr>
+        <tr>
+          <td colspan="5" align="right">
+            <input type="submit" value="Sum"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <script>
+      // giá
+      const prices = [19.95, 29.95, 39.95];
+
+      function recalc() {
+        const q1 = parseFloat(document.getElementById("qty1").value) || 0;
+        const q2 = parseFloat(document.getElementById("qty2").value) || 0;
+        const q3 = parseFloat(document.getElementById("qty3").value) || 0;
+
+        const i1 = q1 * prices[0];
+        const i2 = q2 * prices[1];
+        const i3 = q3 * prices[2];
+        const sum = i1 + i2 + i3;
+
+        document.getElementById("item1").value = i1.toFixed(2);
+        document.getElementById("item2").value = i2.toFixed(2);
+        document.getElementById("item3").value = i3.toFixed(2);
+        document.getElementById("total").value = sum.toFixed(2);
+      }
+
+      ["qty1","qty2","qty3"].forEach(id=>{
+        document.getElementById(id).addEventListener("input", recalc);
+      });
+    </script>
+  </body>
+</html>

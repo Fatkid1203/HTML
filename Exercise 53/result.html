@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Product Result - Huỳnh Tấn Phát</title>
+    <meta charset="utf-8"/>
+    <script>
+      function getUrlVars() {
+        var vars = {};
+        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,k,v){
+          vars[k] = decodeURIComponent(v.replace(/\+/g," "));
+        });
+        return vars;
+      }
+      function show_data(){
+        var d = getUrlVars();
+        document.getElementById("qty1").innerText  = d["qty1"]  || "0";
+        document.getElementById("qty2").innerText  = d["qty2"]  || "0";
+        document.getElementById("qty3").innerText  = d["qty3"]  || "0";
+        document.getElementById("item1").innerText = d["item1"] || "0.00";
+        document.getElementById("item2").innerText = d["item2"] || "0.00";
+        document.getElementById("item3").innerText = d["item3"] || "0.00";
+        document.getElementById("total").innerText = d["total"] || "0.00";
+      }
+    </script>
+  </head>
+  <body onload="show_data()">
+    <h3>Order Summary</h3>
+    <table border="1" cellpadding="5">
+      <tr>
+        <th>Part Number</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Item total</th>
+      </tr>
+      <tr>
+        <td>C112</td>
+        <td>Mouse</td>
+        <td>19.95</td>
+        <td id="qty1">&nbsp;</td>
+        <td id="item1">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>B124</td>
+        <td>Keyboard US</td>
+        <td>29.95</td>
+        <td id="qty2">&nbsp;</td>
+        <td id="item2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>U125</td>
+        <td>USB KingMax</td>
+        <td>39.95</td>
+        <td id="qty3">&nbsp;</td>
+        <td id="item3">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="4" align="right"><b>Total:</b></td>
+        <td id="total">&nbsp;</td>
+      </tr>
+    </table>
+    <br/>
+    <a href="home.html">← Back to product list</a>
+  </body>
+</html>
