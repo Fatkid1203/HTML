@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Person - Huỳnh Tấn Phát</title>
+        <script type="text/javascript">
+            var person={
+                ID:"Cus01",
+                Firstname:"Fatkid",
+                Lastname:"A A",
+                Birthday:new Date(2005,3,22),
+                Fullname:function()
+                {
+                    return this.Lastname+" "+this.Firstname
+                },
+                GetAge:function()
+                {
+                    return new Date().getFullYear() - this.Birthday.getFullYear()
+                },
+                Photo:"3E.jpg"
+            }
+        </script>
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <td>ID:</td>
+                <td id="td_id"></td>
+            </tr>
+            <tr>
+                <td>Firstname:</td>
+                <td id="td_Firstname"></td>
+            </tr>
+            <tr>
+                <td>Lastname:</td>
+                <td id="td_Lastname"></td>
+            </tr>
+            <tr>
+                <td>Fullname:</td>
+                <td id="td_fullname"></td>
+            </tr>
+            <tr>
+                <td>Birthday:</td>
+                <td id="td_Birthday"></td>
+            </tr>
+            <tr>
+                <td>Age:</td>
+                <td id="td_Age"></td>
+            </tr>
+            <tr>
+                <td>photo:</td>
+                <td>
+                    <img id="img_photo" width="300px" height="200px"
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            td_id.innerText=person.ID
+            td_Firstname.innerText=person.Firstname
+            td_Lastname.innerText=person["Lastname"]
+            td_fullname.innerText=person.Fullname()
+            td_Birthday.innerText=person.Birthday.toDateString()
+            td_Age.innerText = person.GetAge()
+            img_photo.src="../Images/"+person.Photo
+        </script>
+    </body>
+</html>
