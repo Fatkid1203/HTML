@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Login - Huỳnh Tấn Phát</title>
+        <script type="text/javascript">
+            accounts=[
+                {"user":"admin",
+                "password":"123",
+                },
+                {"user":"employee",
+                "password":"456",
+                },
+            ]
+        </script>
+        <script type="text/javascript">
+            function process_login()
+            {
+                uid=my_form.user_name.value
+                pwd=my_form.password.value
+                login_ac=null
+                for(i=0;i<accounts.length;i++)
+                {
+                    ac=accounts[i]
+                    if(ac.user==uid && ac.password==pwd)
+                    {
+                        //login thành công
+                        login_ac=ac
+                        break
+                    }
+                }
+                if(login_ac==null)
+                {
+                    alert("Login Failed, please contact admin");
+                }
+                else
+                {
+                    window.location = "xml_ajax.html";
+                }
+            }
+        </script>
+        <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("password").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    process_login();
+                }
+            });
+        });
+        </script>
+    </head>
+    <body>
+        <form name="my_form">
+            <fieldset>
+                <legend>login ABC System</legend>
+                <table>
+                    <tr>
+                        <td rowspan="7">
+                        <img src="images/admin.png" width="200" height="200"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>User:</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" name="user_name" id="user_name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="password" name="password" id="password"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="save_infor" id="save_infor"/>
+                            <label for="save_infor">Save Login Information</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onclick="process_login()">Login</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
+    </body>
+</html>

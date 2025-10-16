@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <title>dom3 - Huỳnh Tấn Phát</title>
+        <script type="text/javascript">
+            var datasets = [
+                { ID: "P01", Name: "Coca", Quantity: 15, Price: 15000, Photo: "3E.jpg" },
+                { ID: "P02", Name: "PEPSI", Quantity: 12, Price: 13000, Photo: "pepsi.png" },
+                { ID: "P03", Name: "STING", Quantity: 10, Price: 12000, Photo: "sting.png" },
+                { ID: "P04", Name: "FANTA", Quantity: 11, Price: 16000, Photo: "fanta.png" },
+                { ID: "P05", Name: "LAVI", Quantity: 5, Price: 5000, Photo: "lavi.png" }
+            ];
+        </script>
+    </head>
+
+    <body>
+        <table border="1">
+            <caption>List of Product</caption>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="product_tbody">
+            </tbody>
+
+            <script type="text/javascript">
+                function display_products_table() {
+                    // lấy phần tbody
+                    var product_tbody = document.getElementById("product_tbody");
+
+                    // lặp qua từng phần tử trong mảng datasets
+                    for (var i = 0; i < datasets.length; i++) {
+                        var product = datasets[i];
+
+                        // tạo dòng
+                        var row = document.createElement("tr");
+
+                        // tạo 6 ô td
+                        var td_id = document.createElement("td");
+                        var td_name = document.createElement("td");
+                        var td_quantity = document.createElement("td");
+                        var td_price = document.createElement("td");
+                        var td_photo = document.createElement("td");
+                        var td_actions = document.createElement("td");
+
+                        // gán giá trị cho từng ô
+                        td_id.innerText = product.ID;
+                        td_name.innerText = product.Name;
+                        td_quantity.innerText = product.Quantity;
+                        td_price.innerText = product.Price;
+
+                        // ảnh sản phẩm
+                        img_p = document.createElement("img");
+                        img_p.setAttribute("src", "../Images/" + product.Photo); // đúng đường dẫn: ../Images/
+                        img_p.setAttribute("width", "100px");
+                        img_p.setAttribute("height", "120px");
+                        img_p.setAttribute("title", "Click here to view details");
+                        img_p.setAttribute("style", "cursor:pointer");
+                        td_photo.appendChild(img_p);
+
+                        // ảnh biểu tượng chi tiết
+                        img_detail = document.createElement("img");
+                        img_detail.setAttribute("src", "../Images/detail.png");
+                        img_detail.setAttribute("title", "View detail");
+                        img_detail.setAttribute("style", "cursor:pointer; width:25px; height:25px;");
+                        td_actions.appendChild(img_detail);
+
+                        // gắn sản phẩm hiện tại vào ảnh detail
+                        img_detail.selected_product = product;
+
+                        // sự kiện click mở detail.html
+                        img_detail.onclick = function () {
+                            var p = this.selected_product;
+                            var stringJsonObject = JSON.stringify(p);
+                            localStorage.setItem("selected_product", stringJsonObject);
+                            window.open("detail.html");
+                        };
+
+                        // edit
+                        img_edit = document.createElement("img");
+                        img_edit.setAttribute("src", "../Images/edit.png");
+                        img_edit.setAttribute("title", "Edit product");
+                        img_edit.setAttribute("style", "cursor:pointer; width:25px; height:25px; margin-left:5px;");
+                        td_actions.appendChild(img_edit);
+
+                        // delete
+                        img_delete = document.createElement("img");
+                        img_delete.setAttribute("src", "../Images/trash.png");
+                        img_delete.setAttribute("title", "Delete product");
+                        img_delete.setAttribute("style", "cursor:pointer; width:25px; height:25px; margin-left:5px;");
+                        td_actions.appendChild(img_delete);
+
+                        // gán dòng cha cho nút xóa
+                        img_delete.parent_row = row;
+                        img_delete.onclick = function () {
+                            var selected_row = this.parent_row;
+                            var name_remove = selected_row.childNodes[1].innerText;
+                            if (confirm("Ê, muốn xóa [" + name_remove + "] hả?")) {
+                                product_tbody.removeChild(selected_row);
+                            }
+                        };
+
+                        // thêm td vào tr
+                        row.appendChild(td_id);
+                        row.appendChild(td_name);
+                        row.appendChild(td_quantity);
+                        row.appendChild(td_price);
+                        row.appendChild(td_photo);
+                        row.appendChild(td_actions);
+
+                        // thêm tr vào tbody
+                        product_tbody.appendChild(row);
+                    }
+                }
+
+                // gọi hàm hiển thị
+                display_products_table();
+            </script>
+        </table>
+    </body>
+</html>
