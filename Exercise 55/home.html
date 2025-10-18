@@ -1,0 +1,122 @@
+<html>
+
+<head>
+    <title>Exercise 55 - Huỳnh Tấn Phát</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        table {
+            border-collapse: collapse;
+            background: lavender;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        th {
+            padding: 10px;
+            text-align: center;
+            font-size: 16px;
+        }
+        td {
+            padding: 8px 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 6px;
+        }
+        #result {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            padding: 6px 12px;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fdfdfd;
+        }
+        button:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="1" style="margin:auto; width:350px; border-collapse:collapse;">
+        <tr>
+            <th colspan="2" style="padding:12px; text-align:center;">The quadratic equation</th>
+        </tr>
+        <tr>
+            <td style="padding:10px;">a</td>
+            <td style="padding:10px;"><input type="number" id="a" value="" /></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">b</td>
+            <td style="padding:10px;"><input type="number" id="b" value="" /></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">c</td>
+            <td style="padding:10px;"><input type="number" id="c" value="-" /></td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">Result</td>
+            <td id="result" style="padding:10px;"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center; padding:10px;">
+                <button onclick="findSolution()">Find solution</button>
+                <button onclick="clearAll()">Clear</button>
+            </td>
+        </tr>
+    </table>
+    <script>
+        function findSolution() {
+            let a = parseFloat(document.getElementById("a").value);
+            let b = parseFloat(document.getElementById("b").value);
+            let c = parseFloat(document.getElementById("c").value);
+            let result = document.getElementById("result");
+
+            // Kiểm tra đầu vào
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                result.innerText = "Please enter valid numbers!";
+                return;
+            }
+
+            // Nếu a = 0 -> bậc nhất
+            if (a === 0) {
+                if (b === 0)
+                    result.innerText = (c === 0) ? "Infinite solutions" : "No solution";
+                else
+                    result.innerText = "x = " + (-c / b).toFixed(2);
+                return;
+            }
+
+            // Tính delta
+            let delta = b * b - 4 * a * c;
+
+            if (delta < 0)
+                result.innerText = "No real roots";
+            else if (delta === 0) {
+                let x = -b / (2 * a);
+                result.innerText = "Double root: x = " + x.toFixed(2);
+            } else {
+                let x1 = (-b + Math.sqrt(delta)) / (2 * a);
+                let x2 = (-b - Math.sqrt(delta)) / (2 * a);
+                result.innerText = "x₁ = " + x1.toFixed(2) + " and x₂ = " + x2.toFixed(2);
+            }
+        }
+
+        function clearAll() {
+            document.getElementById("a").value = "";
+            document.getElementById("b").value = "";
+            document.getElementById("c").value = "";
+            document.getElementById("result").innerText = "";
+        }
+    </script>
+</body>
+</html>

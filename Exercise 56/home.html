@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <title>Exercise 56 - Huỳnh Tấn Phát</title>
+        <style>
+            body {
+                background-color: lavender;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            table {
+                border-collapse: collapse;
+                background: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                width: 600px;
+            }
+            th {
+                text-align: center;
+                background-color: #f1f1d6;
+                padding: 8px;
+                font-size: 18px;
+            }
+            td {
+                padding: 8px;
+                border: 1px solid #ccc;
+            }
+            textarea {
+                width: 100%;
+                height: 80px;
+                resize: none;
+                padding: 5px;
+            }
+            button {
+                font-size:15px
+                width: 100%;
+                padding: 8px;
+                margin: 5px 0;
+                cursor: pointer;
+                border: 1px solid;
+                border-radius: 4px;
+                background-color: #fafafa;
+            }
+            button:hover {
+                background-color: #e9e9e9;
+            }
+            .footer {
+                text-align: center;
+                font-size: 20px;
+                padding: 5px;
+                background-color: #f9f9f9;
+            }
+        </style>
+
+        <script>
+            function getInput() {
+                return document.getElementById("inputData").value;
+            }
+            function showResult(value) {
+                document.getElementById("resultData").value = value;
+            }
+
+            function enterData() {
+                let text = prompt("Enter your text:");
+                if (text !== null) document.getElementById("inputData").value = text;
+            }
+
+            function upperCaseDisplay() {
+                showResult(getInput().toUpperCase());
+            }
+
+            function lowerCaseDisplay() {
+                showResult(getInput().toLowerCase());
+            }
+
+            function countUpperCase() {
+                let text = getInput();
+                let count = (text.match(/[A-Z]/g) || []).length;
+                showResult("Number of uppercase letters: " + count);
+            }
+
+            function countLowerCase() {
+                let text = getInput();
+                let count = (text.match(/[a-z]/g) || []).length;
+                showResult("Number of lowercase letters: " + count);
+            }
+
+            function wordCount() {
+                let text = getInput().trim();
+                let count = text ? text.split(/\s+/).length : 0;
+                showResult("Word count: " + count);
+            }
+
+            function oneWordPerLine() {
+                let text = getInput().trim().split(/\s+/).join("\n");
+                showResult(text);
+            }
+
+            function printVowelsConsonants() {
+                let text = getInput().toLowerCase();
+                let vowels = (text.match(/[aeiou]/g) || []).length;
+                let consonants = (text.match(/[bcdfghjklmnpqrstvwxyz]/g) || []).length;
+                showResult(`Vowels: ${vowels}\nConsonants: ${consonants}`);
+            }
+        </script>
+    </head>
+
+    <body>
+        <table>
+            <tr>
+                <th colspan="2">Using String Processing functions</th>
+            </tr>
+            <tr>
+                <td><b>Input Data:</b><br><textarea id="inputData"></textarea></td>
+                <td><b>Result:</b><br><textarea id="resultData" readonly></textarea></td>
+            </tr>
+            <tr>
+                <td><button onclick="enterData()">Enter Data</button></td>
+                <td><button onclick="countUpperCase()">Count the number of uppercase characters</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="upperCaseDisplay()">Uppercase display</button></td>
+                <td><button onclick="oneWordPerLine()">Output one word per line</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="lowerCaseDisplay()">Lowercase display</button></td>
+                <td><button onclick="wordCount()">Word count</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="countLowerCase()">Count the number of lowercase characters</button></td>
+                <td><button onclick="printVowelsConsonants()">Print vowels, consonants</button></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="footer">W3C’s String Processing Website</td>
+            </tr>
+        </table>
+    </body>
+</html>

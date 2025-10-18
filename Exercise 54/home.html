@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <title>Exercise 54 - Huỳnh Tấn Phát</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            background: lavender;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+            padding: 6px 12px;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+        }
+
+        .result {
+            font-weight: bold;
+            color: red;
+        }
+
+        button {
+            margin: 3px;
+            padding: 5px 12px;
+            cursor: pointer;
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="1">
+        <tr>
+            <td>a:</td>
+            <td><input type="number" id="a" value="" /></td>
+        </tr>
+        <tr>
+            <td>b:</td>
+            <td><input type="number" id="b" value="" /></td>
+        </tr>
+        <tr>
+            <td>c:</td>
+            <td><input type="number" id="c" value="" /></td>
+        </tr>
+        <tr>
+            <td>Result:</td>
+            <td class="result" id="result">0</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <button onclick="calcMax()">MAX</button>
+                <button onclick="calcMin()">MIN</button>
+                <button onclick="calcSin()">sin(a)</button>
+                <button onclick="calcCos()">cos(a)</button>
+                <button onclick="calcPower()">a^b</button>
+            </td>
+        </tr>
+    </table>
+    <script>
+        function getValues() {
+            return {
+                a: parseFloat(document.getElementById("a").value) || 0,
+                b: parseFloat(document.getElementById("b").value) || 0,
+                c: parseFloat(document.getElementById("c").value) || 0
+            };
+        }
+
+        function showResult(value) {
+            document.getElementById("result").innerText = value;
+        }
+
+        function calcMax() {
+            let { a, b, c } = getValues();
+            showResult(Math.max(a, b, c));
+        }
+
+        function calcMin() {
+            let { a, b, c } = getValues();
+            showResult(Math.min(a, b, c));
+        }
+
+        function calcSin() {
+            let { a } = getValues();
+            // Chuyển độ sang radian trước khi tính sin
+            showResult(Math.sin(a * Math.PI / 180));
+        }
+
+        function calcCos() {
+            let { a } = getValues();
+            showResult(Math.cos(a * Math.PI / 180));
+        }
+
+        function calcPower() {
+            let { a, b } = getValues();
+            showResult(Math.pow(a, b));
+        }
+    </script>
+</body>
+
+</html>
