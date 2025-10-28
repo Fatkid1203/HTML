@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VnExpress RSS Reader - Huỳnh Tấn Phát</title>
+    <style>
+      /* ===== Base ===== */
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: #0b0d12; color: #e9eef5; }
+      a { color: inherit; text-decoration: none; }
+
+      /* ===== Layout ===== */
+      header { padding: 20px 16px; border-bottom: 1px solid #1b2433; position: sticky; top: 0; backdrop-filter: blur(6px); background: rgba(11,13,18,0.8); z-index: 50; }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand img { width: 32px; height: 32px; object-fit: contain; }
+      .brand h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: 0.2px; }
+      .meta { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+
+      .controls { display: flex; gap: 8px; margin-top: 10px; }
+      .controls input[type="text"] { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid #1b2433; background: #111827; color: #e9eef5; outline: none; }
+      .controls button { padding: 10px 14px; border-radius: 10px; border: 1px solid #1b2433; background: #131b26; color: #e9eef5; cursor: pointer; }
+      .controls button:hover { background: #162235; }
+
+      main { padding: 20px 16px 48px; }
+      .grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 16px; }
+      @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+      /* ===== Card ===== */
+      .card { background: #0f1521; border: 1px solid #1b2433; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform .15s ease, box-shadow .15s ease; }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,.25); }
+      .thumb { position: relative; width: 100%; padding-top: 56%; background: #0b0d12; overflow: hidden; }
+      .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .content { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+      .title { font-weight: 700; line-height: 1.35; font-size: 15px; }
+      .desc { font-size: 13px; opacity: .85; line-height: 1.5; max-height: 3.8em; overflow: hidden; }
+      .info { display: flex; align-items: center; justify-content: space-between; font-size: 12px; opacity: .7; }
+
+      /* ===== Empty / Error ===== */
+      .state { text-align: center; padding: 32px 16px; border: 1px dashed #23324b; border-radius: 12px; background: #0f1521; }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="brand">
+          <img id="channel-logo" alt="logo" src="https://s.vnecdn.net/vnexpress/i/v20/logos/vne_logo_rss.png" />
+          <div>
+            <h1 id="channel-title">VnExpress RSS Reader</h1>
+            <div id="channel-desc" class="meta">Tải và hiển thị tin từ RSS.</div>
+          </div>
+        </div>
+        <div class="controls">
+          <input id="feed-url" type="text" placeholder="Dán URL RSS (mặc định: Kinh doanh)" value="https://vnexpress.net/rss/kinh-doanh.rss" />
+          <button id="btn-load">Tải tin</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div id="status" class="state">Đang chờ tải RSS…</div>
+      <section id="cards" class="grid hidden"></section>
+    </main>
+
+    <script>
+      // ====== Helpers ======
+      const $ = (sel, ctx = document) => ctx.querySelector(sel);
+      const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+      const DEFAULT_FEED = 'https://vnexpress.net/rss/kinh-doanh.rss';
+      // AllOrigins bypasses CORS and returns raw body
+      const proxyUrl = (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+
+      function formatDateRFC822(str) {
+        try {
+          const d = new Date(str);
+          if (isNaN(d)) return '';
+          return d.toLocaleString('vi-VN', { hour12: false });
+        } catch { return ''; }
+      }
+
+      function extractImageFromDescription(descHtml) {
+        if (!descHtml) return '';
+        const tmp = document.createElement('div');
+        tmp.innerHTML = descHtml;
+        const img = tmp.querySelector('img');
+        return img ? img.getAttribute('src') || '' : '';
+      }
+
+      function stripHtml(html) {
+        if (!html) return '';
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+      }
+
+      function getText(el, tag) {
+        const node = el.getElementsByTagName(tag)[0];
+        return node ? node.textContent.trim() : '';
+      }
+
+      function getAttr(el, tag, attr) {
+        const node = el.getElementsByTagName(tag)[0];
+        return node ? (node.getAttribute(attr) || '').trim() : '';
+      }
+
+      async function loadFeed(feedUrl) {
+        const statusEl = $('#status');
+        const cardsEl = $('#cards');
+        statusEl.classList.remove('hidden');
+        cardsEl.classList.add('hidden');
+        statusEl.textContent = 'Đang tải RSS…';
+
+        try {
+          const res = await fetch(proxyUrl(feedUrl));
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const xmlText = await res.text();
+          const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+
+          // Channel info
+          const channel = xml.getElementsByTagName('channel')[0];
+          if (!channel) throw new Error('Không tìm thấy <channel> trong RSS.');
+
+          const chTitle = getText(channel, 'title') || 'VnExpress RSS';
+          const chDesc = getText(channel, 'description') || '';
+
+          const imageNode = channel.getElementsByTagName('image')[0];
+          const chLogo = imageNode ? getText(imageNode, 'url') : 'https://s.vnecdn.net/vnexpress/i/v20/logos/vne_logo_rss.png';
+
+          $('#channel-title').textContent = chTitle;
+          $('#channel-desc').textContent = chDesc;
+          $('#channel-logo').src = chLogo || 'https://s.vnecdn.net/vnexpress/i/v20/logos/vne_logo_rss.png';
+
+          const items = Array.from(channel.getElementsByTagName('item'));
+          if (!items.length) {
+            statusEl.textContent = 'Nguồn RSS không có bài nào.';
+            return;
+          }
+
+          // Build cards
+          cardsEl.innerHTML = '';
+          const LIMIT = 18;
+          items.slice(0, LIMIT).forEach((item) => {
+            const title = getText(item, 'title');
+            const link = getText(item, 'link');
+            const pubDate = getText(item, 'pubDate');
+            const desc = getText(item, 'description');
+
+            // Prefer <enclosure url>, else first <img> in description
+            let imgUrl = '';
+            const enclosure = item.getElementsByTagName('enclosure')[0];
+            if (enclosure && enclosure.getAttribute('url')) {
+              imgUrl = enclosure.getAttribute('url');
+            } else {
+              imgUrl = extractImageFromDescription(desc);
+            }
+
+            const safeDesc = stripHtml(desc).replace(/\s+/g, ' ').trim();
+
+            const card = document.createElement('article');
+            card.className = 'card';
+            card.innerHTML = `
+              <a class="thumb" href="${link}" target="_blank" rel="noopener noreferrer" aria-label="Mở bài gốc">
+                ${imgUrl ? `<img loading="lazy" src="${imgUrl}" alt="thumbnail"/>` : ''}
+              </a>
+              <div class="content">
+                <a class="title" href="${link}" target="_blank" rel="noopener noreferrer">${title}</a>
+                <div class="desc">${safeDesc}</div>
+                <div class="info">
+                  <span>${formatDateRFC822(pubDate)}</span>
+                  <span>VnExpress</span>
+                </div>
+              </div>
+            `;
+            cardsEl.appendChild(card);
+          });
+
+          statusEl.classList.add('hidden');
+          cardsEl.classList.remove('hidden');
+        } catch (err) {
+          console.error(err);
+          $('#status').textContent = 'Không tải được RSS. Kiểm tra URL hoặc kết nối mạng (chi tiết trong console).';
+        }
+      }
+
+      // ====== Events ======
+      $('#btn-load').addEventListener('click', () => {
+        const url = $('#feed-url').value.trim() || DEFAULT_FEED;
+        loadFeed(url);
+      });
+
+      // Tải mặc định khi mở trang
+      loadFeed(DEFAULT_FEED);
+    </script>
+  </body>
+</html>
