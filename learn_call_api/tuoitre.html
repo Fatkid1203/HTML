@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Báo Thời Tiết Việt Nam - Huỳnh Tấn Phát</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #87CEEB, #87CEEB);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        .weather-current {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .weather-info h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .forecast {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+        }
+        .forecast-day {
+            min-width: 120px;
+            text-align: center;
+            background: #ffffcc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .forecast-icon {
+            width: 50px;
+            height: 50px;
+        }
+        /* Keep select/options horizontal to avoid one-letter-per-line rendering on some WebKit skins */
+        select, option { writing-mode: horizontal-tb; text-orientation: mixed; }
+    </style>
+    <script type="text/javascript">
+        let data = [
+  {
+    "value": "2347719",
+    "name": "An Giang"
+  },
+  {
+    "value": "20070078",
+    "name": "Bình Dương"
+  },
+  {
+    "value": "20070086",
+    "name": "Bình Phước"
+  },
+  {
+    "value": "2347731",
+    "name": "Bình Thuận"
+  },
+  {
+    "value": "2347730",
+    "name": "Bình Định"
+  },
+  {
+    "value": "20070081",
+    "name": "Bạc Liêu"
+  },
+  {
+    "value": "20070087",
+    "name": "Bắc Giang"
+  },
+  {
+    "value": "20070084",
+    "name": "Bắc Kạn"
+  },
+  {
+    "value": "20070088",
+    "name": "Bắc Ninh"
+  },
+  {
+    "value": "2347703",
+    "name": "Bến Tre"
+  },
+  {
+    "value": "2347704",
+    "name": "Cao Bằng"
+  },
+  {
+    "value": "20070082",
+    "name": "Cà Mau"
+  },
+  {
+    "value": "2347732",
+    "name": "Cần Thơ"
+  },
+  {
+    "value": "28301718",
+    "name": "Điện Biên"
+  },
+  {
+    "value": "20070085",
+    "name": "Đà Nẵng"
+  },
+  {
+    "value": "1252375",
+    "name": "Đà Lạt"
+  },
+  {
+    "value": "2347720",
+    "name": "Đắk Lắk"
+  },
+  {
+    "value": "28301719",
+    "name": "Đắk Nông"
+  },
+  {
+    "value": "2347721",
+    "name": "Đồng Nai"
+  },
+  {
+    "value": "2347722",
+    "name": "Đồng Tháp"
+  },
+  {
+    "value": "2347733",
+    "name": "Gia Lai"
+  },
+  {
+    "value": "2347727",
+    "name": "Hà Nội"
+  },
+  {
+    "value": "2347728",
+    "name": "TP. Hồ Chí Minh"
+  },
+  {
+    "value": "2347734",
+    "name": "Hà Giang"
+  },
+  {
+    "value": "2347741",
+    "name": "Hà Nam"
+  },
+  {
+    "value": "2347736",
+    "name": "Hà Tĩnh"
+  },
+  {
+    "value": "2347737",
+    "name": "Hòa Bình"
+  },
+  {
+    "value": "20070079",
+    "name": "Hưng Yên"
+  },
+  {
+    "value": "20070080",
+    "name": "Hải Dương"
+  },
+  {
+    "value": "2347707",
+    "name": "Hải Phòng"
+  },
+  {
+    "value": "28301720",
+    "name": "Hậu Giang"
+  },
+  {
+    "value": "2347738",
+    "name": "Khánh Hòa"
+  },
+  {
+    "value": "2347723",
+    "name": "Kiên Giang"
+  },
+  {
+    "value": "20070076",
+    "name": "Kon Tum"
+  },
+  {
+    "value": "2347708",
+    "name": "Lai Châu"
+  },
+  {
+    "value": "2347710",
+    "name": "Long An"
+  },
+  {
+    "value": "2347740",
+    "name": "Lào Cai"
+  },
+  {
+    "value": "2347709",
+    "name": "Lâm Đồng"
+  },
+  {
+    "value": "2347718",
+    "name": "Lạng Sơn"
+  },
+  {
+    "value": "20070089",
+    "name": "Nam Định"
+  },
+  {
+    "value": "2347742",
+    "name": "Nghệ An"
+  },
+  {
+    "value": "2347743",
+    "name": "Ninh Bình"
+  },
+  {
+    "value": "2347744",
+    "name": "Ninh Thuận"
+  },
+  {
+    "value": "20070091",
+    "name": "Phú Thọ"
+  },
+  {
+    "value": "2347745",
+    "name": "Phú Yên"
+  },
+  {
+    "value": "2347746",
+    "name": "Quảng Bình"
+  },
+  {
+    "value": "2347711",
+    "name": "Quảng Nam"
+  },
+  {
+    "value": "20070077",
+    "name": "Quảng Ngãi"
+  },
+  {
+    "value": "2347712",
+    "name": "Quảng Ninh"
+  },
+  {
+    "value": "2347747",
+    "name": "Quảng Trị"
+  },
+  {
+    "value": "2347748",
+    "name": "Sóc Trăng"
+  },
+  {
+    "value": "2347713",
+    "name": "Sơn La"
+  },
+  {
+    "value": "2347715",
+    "name": "Thanh Hóa"
+  },
+  {
+    "value": "2347716",
+    "name": "Thái Bình"
+  },
+  {
+    "value": "20070083",
+    "name": "Thái Nguyên"
+  },
+  {
+    "value": "2347749",
+    "name": "Thừa Thiên Huế"
+  },
+  {
+    "value": "2347717",
+    "name": "Tiền Giang"
+  },
+  {
+    "value": "2347750",
+    "name": "Trà Vinh"
+  },
+  {
+    "value": "2347751",
+    "name": "Tuyên Quang"
+  },
+  {
+    "value": "2347714",
+    "name": "Tây Ninh"
+  },
+  {
+    "value": "2347752",
+    "name": "Vĩnh Long"
+  },
+  {
+    "value": "20070090",
+    "name": "Vĩnh Phúc"
+  },
+  {
+    "value": "2347729",
+    "name": "Vũng Tàu"
+  },
+  {
+    "value": "2347753",
+    "name": "Yên Bái"
+  }
+]
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Dự Báo Thời Tiết Việt Nam</h1>
+        <select id="province-select">
+            <option value="">Chọn tỉnh thành</option>
+        </select>
+        <div id="weather-display" style="display: none;">
+            <div class="weather-current">
+                <img id="current-icon" class="weather-icon" src="" alt="Weather Icon">
+                <div class="weather-info">
+                    <h2 id="location"></h2>
+                    <p id="temperature"></p>
+                    <p id="status"></p>
+                </div>
+            </div>
+            <div class="weather-details">
+                <div><strong>Cao nhất:</strong> <span id="high"></span>°C</div>
+                <div><strong>Thấp nhất:</strong> <span id="low"></span>°C</div>
+                <div><strong>Cảm giác như:</strong> <span id="feels-like"></span>°C</div>
+                <div><strong>Độ ẩm:</strong> <span id="humidity"></span></div>
+                <div><strong>Tầm nhìn:</strong> <span id="visibility"></span></div>
+                <div><strong>UV Index:</strong> <span id="uv-index"></span></div>
+                <div><strong>Gió:</strong> <span id="wind"></span></div>
+                <div><strong>Mặt trời mọc:</strong> <span id="sunrise"></span></div>
+                <div><strong>Mặt trời lặn:</strong> <span id="sunset"></span></div>
+            </div>
+            <h3>Dự báo theo giờ (12h → 23h)</h3>
+            <div class="forecast" id="hourly"></div>
+            <h3 style="margin-top:16px">Dự báo 7 ngày</h3>
+            <div class="forecast" id="forecast"></div>
+        </div>
+    </div>
+    <script>
+        const select = document.getElementById('province-select');
+        data.forEach(province => {
+            const option = document.createElement('option');
+            option.value = province.value;
+            option.textContent = province.name;
+            select.appendChild(option);
+        });
+
+        select.addEventListener('change', function() {
+            const value = this.value;
+            if (value) {
+                fetchWeather(value);
+            } else {
+                document.getElementById('weather-display').style.display = 'none';
+            }
+        });
+
+        async function fetchWeather(value) {
+            try {
+                const response = await fetch(`https://api.allorigins.win/raw?url=https://utils3.cnnd.vn/ajax/weatherinfo/${value}.htm`);
+                const data = await response.json();
+                if (data.Data.success) {
+                    displayWeather(data.Data.data.datainfo);
+                }
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        }
+
+        function displayWeather(info) {
+            document.getElementById('location').textContent = info.location;
+            document.getElementById('temperature').textContent = `${info.temperature}°C`;
+            document.getElementById('status').textContent = info.status;
+            document.getElementById('high').textContent = info.high;
+            document.getElementById('low').textContent = info.low;
+            document.getElementById('feels-like').textContent = info.feels_like;
+            document.getElementById('humidity').textContent = info.humidity;
+            document.getElementById('visibility').textContent = `${info.visibility.index} ${info.visibility.unit}`;
+            document.getElementById('uv-index').textContent = `${info.UV_index.index} (${info.UV_index.status})`;
+            document.getElementById('wind').textContent = `${info.wind.index} ${info.wind.unit}`;
+            document.getElementById('sunrise').textContent = info.sunrise;
+            document.getElementById('sunset').textContent = info.sunset;
+            document.getElementById('current-icon').src = info.shadow_icon;
+
+            // Hourly (filter 12 -> 23)
+            const hourlyDiv = document.getElementById('hourly');
+            hourlyDiv.innerHTML = '';
+            if (Array.isArray(info.hourly_temperature)) {
+                const hours = info.hourly_temperature.filter(h => {
+                    const t = parseInt(h.time, 10);
+                    return !isNaN(t) && t >= 12 && t <= 23;
+                });
+                hours.forEach(h => {
+                    const card = document.createElement('div');
+                    card.className = 'forecast-day';
+                    card.innerHTML = `
+                        <p>${h.time}:00</p>
+                        ${h.shadow_icon ? `<img src="${h.shadow_icon}" alt="" class="forecast-icon">` : ''}
+                        <p><strong>${h.temperature}°C</strong></p>
+                        <p>${h.status || ''}</p>
+                    `;
+                    hourlyDiv.appendChild(card);
+                });
+            }
+
+            const forecastDiv = document.getElementById('forecast');
+            forecastDiv.innerHTML = '';
+            info.forecast.forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'forecast-day';
+                dayDiv.innerHTML = `
+                    <p>${day.date}</p>
+                    <img src="${day.shadow_icon}" alt="Forecast Icon" class="forecast-icon">
+                    <p>${day.high}°/${day.low}°</p>
+                    <p>${day.status}</p>
+                `;
+                forecastDiv.appendChild(dayDiv);
+            });
+
+            document.getElementById('weather-display').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
