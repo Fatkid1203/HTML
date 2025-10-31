@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Company - Products</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Part A: Header/Menu -->
+        <div class="part-a">
+            <div class="menu">
+                <a href="index.html" class="menu-item">About me</a>
+                
+                <div class="dropdown">
+                    <div class="menu-item">API and External</div>
+                    <div class="dropdown-content">
+                        <a href="weather.html">Weather API</a>
+                        <a href="rss.html">RSS</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="menu-item active">Form & Javascript</div>
+                    <div class="dropdown-content">
+                        <a href="products.html">Products</a>
+                        <a href="providers.html">Providers</a>
+                    </div>
+                </div>
+                
+                <a href="login.html" class="menu-item" id="loginLogoutBtn">Login</a>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="middle-section">
+            <!-- Part B: Left Sidebar -->
+            <div class="part-b">
+                <h3>Quick Links</h3>
+                <ul class="sidebar-links">
+                    <li><a href="index.html">📋 Profile</a></li>
+                    <li><a href="weather.html">🌤️ Weather</a></li>
+                    <li><a href="rss.html">📰 News</a></li>
+                    <li><a href="products.html">🛍️ Products</a></li>
+                    <li><a href="providers.html">🏢 Providers</a></li>
+                </ul>
+            </div>
+
+            <!-- Part C: Main Content -->
+            <div class="part-c">
+                <h2 style="margin-bottom: 20px; color: #333;">🛍️ Our Products</h2>
+                
+                <!-- Category Filter -->
+                <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 25px;">
+                    <div class="form-group" style="margin: 0;">
+                        <label style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">Filter by Category:</label>
+                        <select id="categoryFilter" onchange="filterProducts()" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px;">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div style="background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div id="productsTableContainer">
+                        <div class="loading">Loading products from XML...</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 15px; color: #F39C12;">➕ Add New Product (Local Storage)</h3>
+                    <div class="form-container">
+                        <form id="productForm">
+                            <div class="form-group">
+                                <label>Product Name:</label>
+                                <input type="text" id="productName" placeholder="Enter product name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category:</label>
+                                <select id="productCategory" required>
+                                    <option value="">Select category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Food">Food & Beverages</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Home">Home & Garden</option>
+                                    <option value="Sports">Sports & Outdoors</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Price ($):</label>
+                                <input type="number" id="productPrice" step="0.01" min="0" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Stock Quantity:</label>
+                                <input type="number" id="productStock" min="0" placeholder="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description:</label>
+                                <textarea id="productDesc" rows="3" placeholder="Enter product description" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Add Product</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- LocalStorage Products Grid -->
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 15px; color: #3498db;">📦 Products from Local Storage</h3>
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products from localStorage will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part D: Right Sidebar -->
+            <div class="part-d">
+                <h3>Declaration</h3>
+                <marquee direction="down" behavior="scroll" scrollamount="3" scrolldelay="85" loop="-1" style="height: 200px; border: 1px dashed rgba(255,255,255,0.3); padding: 15px; color: white; font-size: 14px; line-height: 1.6;">
+                    I declare that all of these solutions are my own and not copied from anyone in this class
+                </marquee>
+            </div>
+        </div>
+
+        <!-- Part E: Footer -->
+        <div class="part-e">
+            <p style="align-items: left;">&copy; Designed by Huỳnh Tấn Phát. Today is Oct 31. 2025.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load products from XML on page load
+        window.addEventListener('load', function() {
+            loadProductsFromXML();
+            updateLoginButton();
+            loadAuthState();
+        });
+
+        // Handle Login/Logout button
+        function updateLoginButton() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const loginBtn = document.getElementById('loginLogoutBtn');
+            
+            if (loginBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    loginBtn.textContent = 'Logout';
+                    loginBtn.href = '#';
+                    loginBtn.onclick = function(e) {
+                        e.preventDefault();
+                        handleLogout();
+                    };
+                } else {
+                    loginBtn.textContent = 'Login';
+                    loginBtn.href = 'login.html';
+                    loginBtn.onclick = null;
+                }
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('lemon_isLoggedIn');
+                localStorage.removeItem('lemon_currentUser');
+                localStorage.removeItem('lemon_loginTime');
+                alert('Logged out successfully!');
+                updateLoginButton();
+                loadAuthState();
+            }
+        }
+
+        function loadAuthState() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const authStatus = document.getElementById('authStatus');
+            const authUser = document.getElementById('authUser');
+            const authBtn = document.getElementById('authBtn');
+            
+            if (authStatus && authUser && authBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    authStatus.textContent = 'Logged in';
+                    authUser.textContent = 'User: ' + currentUser;
+                    authBtn.textContent = 'Logout';
+                    authBtn.onclick = handleLogout;
+                } else {
+                    authStatus.textContent = 'Not logged in';
+                    authUser.textContent = '';
+                    authBtn.textContent = 'Login';
+                    authBtn.onclick = function() {
+                        window.location.href = 'login.html';
+                    };
+                }
+            }
+        }
+    </script>
+</body>
+</html>

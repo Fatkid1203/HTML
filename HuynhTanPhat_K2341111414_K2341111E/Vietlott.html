@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Company - Vietlott Jackpot</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .vietlott-container {
+            padding: 20px;
+        }
+
+        .radio-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .radio-group h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .radio-option:hover {
+            background: #f8f9fa;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #F39C12;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .vietlott-table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .vietlott-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .vietlott-table thead {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .vietlott-table thead th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .vietlott-table tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .vietlott-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .jackpot-amount {
+            color: #e74c3c;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .draw-date {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .lottery-type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #3498db;
+            color: white;
+        }
+
+        .mega645-badge {
+            background: #27ae60;
+        }
+
+        .power655-badge {
+            background: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Part A: Header/Menu -->
+        <div class="part-a">
+            <div class="menu">
+                <a href="index.html" class="menu-item">About me</a>
+                
+                <div class="dropdown">
+                    <div class="menu-item active">API and External</div>
+                    <div class="dropdown-content">
+                        <a href="weather.html">Weather API</a>
+                        <a href="rss.html">RSS</a>
+                        <a href="vietlott.html">Vietlott</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="menu-item">Form & Javascript</div>
+                    <div class="dropdown-content">
+                        <a href="products.html">Products</a>
+                        <a href="providers.html">Providers</a>
+                    </div>
+                </div>
+                
+                <a href="login.html" class="menu-item" id="loginLogoutBtn">Login</a>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="middle-section">
+            <!-- Part B: Left Sidebar with Radio Buttons -->
+            <div class="part-b">
+                <h3>Vietlott Options</h3>
+                <div style="margin-top: 15px;">
+                    <div style="margin: 10px 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                            <input type="radio" name="lotteryType" value="mega645" checked 
+                                   style="margin-right: 10px; width: 18px; height: 18px; accent-color: #27ae60;"
+                                   onchange="loadVietlottData()">
+                            <span style="font-size: 14px;">Mega 6/45</span>
+                        </label>
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                            <input type="radio" name="lotteryType" value="power655" 
+                                   style="margin-right: 10px; width: 18px; height: 18px; accent-color: #e67e22;"
+                                   onchange="loadVietlottData()">
+                            <span style="font-size: 14px;">Power 6/55</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                    <p style="font-size: 12px; line-height: 1.5;">
+                        Select a lottery type to view jackpot information
+                    </p>
+                </div>
+            </div>
+
+            <!-- Part C: Main Content -->
+            <div class="part-c vietlott-container">
+                <h2 style="margin-bottom: 20px; color: #333;">🎰 Vietlott Jackpot Information</h2>
+                
+                <div id="vietlottContent">
+                    <div class="loading-spinner">
+                        <p>Loading Vietlott data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part D: Right Sidebar -->
+            <div class="part-d">
+                <h3>User Status</h3>
+                <div class="login-status">
+                    <p id="authStatus">Not logged in</p>
+                    <p id="authUser" style="margin-top: 10px; font-size: 14px;"></p>
+                </div>
+                <button class="auth-btn" id="authBtn" onclick="handleLogout()">Login</button>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Quick Stats</h3>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <p style="font-size: 14px; margin: 5px 0;">Products: <strong id="productCount">0</strong></p>
+                        <p style="font-size: 14px; margin: 5px 0;">Providers: <strong id="providerCount">0</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part E: Footer -->
+        <div class="part-e">
+            <p style="align-items: left;">&copy; Designed by Huỳnh Tấn Phát. Today is Oct 31. 2025.</p>
+        </div>
+    </div>
+
+    <script>
+        // Vietlott Data
+        let vietlottData = null;
+
+        // Load Vietlott data on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            updateLoginButton();
+            loadAuthState();
+            loadVietlottData();
+        });
+
+        // Fetch Vietlott data using AJAX
+        function loadVietlottData() {
+            const contentDiv = document.getElementById('vietlottContent');
+            contentDiv.innerHTML = '<div class="loading-spinner"><p>Loading Vietlott data...</p></div>';
+
+            // Get selected lottery type
+            const selectedType = document.querySelector('input[name="lotteryType"]:checked').value;
+            console.log('Loading data for:', selectedType);
+
+            // Use XMLHttpRequest (AJAX)
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://webapi.dantri.com.vn/lottery/get-vietlott-jack', true);
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        console.log('Vietlott API response:', data);
+                        vietlottData = data;
+                        displayVietlottData(selectedType);
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        showError('Error parsing data from API');
+                    }
+                } else {
+                    console.error('HTTP Error:', xhr.status);
+                    showError('Failed to load data. Status: ' + xhr.status);
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Network error');
+                showError('Network error. Please check your internet connection.');
+            };
+
+            xhr.send();
+        }
+
+        // Display Vietlott data in table
+        function displayVietlottData(type) {
+            const contentDiv = document.getElementById('vietlottContent');
+            
+            if (!vietlottData || !vietlottData.data) {
+                showError('No data available');
+                return;
+            }
+
+            // Get data for selected type
+            let selectedData = null;
+            let typeName = '';
+            
+            if (type === 'mega645') {
+                selectedData = vietlottData.data.mega645;
+                typeName = 'Mega 6/45';
+            } else if (type === 'power655') {
+                selectedData = vietlottData.data.power655;
+                typeName = 'Power 6/55';
+            }
+
+            if (!selectedData) {
+                showError('No data for selected lottery type');
+                return;
+            }
+
+            // Build table HTML
+            let html = `
+                <div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, ${type === 'mega645' ? '#27ae60' : '#e67e22'} 0%, ${type === 'mega645' ? '#229954' : '#d35400'} 100%); color: white; border-radius: 10px;">
+                    <h3 style="margin: 0 0 10px 0; font-size: 24px;">${typeName}</h3>
+                    <p style="margin: 0; font-size: 14px; opacity: 0.9;">Latest jackpot information from Vietlott</p>
+                </div>
+
+                <div class="vietlott-table-container">
+                    <table class="vietlott-table">
+                        <thead>
+                            <tr>
+                                <th>Draw Date</th>
+                                <th>Draw Number</th>
+                                <th>Jackpot Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            // Check if data is array or single object
+            const dataArray = Array.isArray(selectedData) ? selectedData : [selectedData];
+            
+            if (dataArray.length === 0) {
+                html += `
+                    <tr>
+                        <td colspan="4" class="no-data">No draw information available</td>
+                    </tr>
+                `;
+            } else {
+                dataArray.forEach(item => {
+                    html += `
+                        <tr>
+                            <td class="draw-date">${item.drawDate || item.date || 'N/A'}</td>
+                            <td><strong>#${item.drawNumber || item.kyQuaySo || 'N/A'}</strong></td>
+                            <td class="jackpot-amount">${formatCurrency(item.jackpot || item.giaiDacBiet || 0)}</td>
+                            <td>${item.status || (item.jackpot > 0 ? 'Active' : 'No winner')}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 13px; color: #666;">
+                    <strong>ℹ️ Note:</strong> Data is fetched from Vietlott official API using AJAX. 
+                    Last updated: ${new Date().toLocaleString('vi-VN')}
+                </div>
+            `;
+
+            contentDiv.innerHTML = html;
+        }
+
+        // Format currency in VND
+        function formatCurrency(amount) {
+            if (!amount || amount === 0) return '0 ₫';
+            return new Intl.NumberFormat('vi-VN', { 
+                style: 'currency', 
+                currency: 'VND' 
+            }).format(amount);
+        }
+
+        // Show error message
+        function showError(message) {
+            const contentDiv = document.getElementById('vietlottContent');
+            contentDiv.innerHTML = `
+                <div class="error-message">
+                    <strong>⚠️ Error:</strong> ${message}
+                    <br><br>
+                    <button onclick="loadVietlottData()" class="submit-btn" style="width: auto; padding: 10px 20px; margin-top: 10px;">
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // Auth functions
+        function updateLoginButton() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const loginBtn = document.getElementById('loginLogoutBtn');
+            
+            if (loginBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    loginBtn.textContent = 'Logout';
+                    loginBtn.href = '#';
+                    loginBtn.onclick = function(e) {
+                        e.preventDefault();
+                        handleLogout();
+                    };
+                } else {
+                    loginBtn.textContent = 'Login';
+                    loginBtn.href = 'login.html';
+                    loginBtn.onclick = null;
+                }
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('lemon_isLoggedIn');
+                localStorage.removeItem('lemon_currentUser');
+                localStorage.removeItem('lemon_userRole');
+                localStorage.removeItem('lemon_userFullName');
+                localStorage.removeItem('lemon_userEmail');
+                localStorage.removeItem('lemon_loginTime');
+                alert('Logged out successfully!');
+                updateLoginButton();
+                loadAuthState();
+            }
+        }
+
+        function loadAuthState() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const userRole = localStorage.getItem('lemon_userRole');
+            const authStatus = document.getElementById('authStatus');
+            const authUser = document.getElementById('authUser');
+            const authBtn = document.getElementById('authBtn');
+            
+            if (authStatus && authUser && authBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    authStatus.textContent = 'Logged in';
+                    authUser.textContent = 'User: ' + currentUser + (userRole ? ' (' + userRole + ')' : '');
+                    authBtn.textContent = 'Logout';
+                    authBtn.onclick = handleLogout;
+                } else {
+                    authStatus.textContent = 'Not logged in';
+                    authUser.textContent = '';
+                    authBtn.textContent = 'Login';
+                    authBtn.onclick = function() {
+                        window.location.href = 'login.html';
+                    };
+                }
+            }
+        }
+
+        // Load stats
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+            try {
+                const products = JSON.parse(savedProducts);
+                const productCountEl = document.getElementById('productCount');
+                if (productCountEl) productCountEl.textContent = products.length;
+            } catch (e) {}
+        }
+
+        const savedProviders = localStorage.getItem('lemon_providers');
+        if (savedProviders) {
+            try {
+                const providers = JSON.parse(savedProviders);
+                const providerCountEl = document.getElementById('providerCount');
+                if (providerCountEl) providerCountEl.textContent = providers.length;
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>

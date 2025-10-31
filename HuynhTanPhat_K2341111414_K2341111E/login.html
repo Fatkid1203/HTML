@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Company - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            max-width: 450px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #F39C12;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: #F39C12;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FDB347 0%, #F39C12 100%);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🍋 Lemon Company</h1>
+            <p>Please login to continue</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Username <span style="color: red;">*</span></label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password <span style="color: red;">*</span></label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+        <!-- Account Information for Testing -->
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #F39C12;">
+            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">📝 Demo Accounts:</h3>
+            <div style="margin-bottom: 10px;">
+                <strong style="color: #e74c3c;">Admin Account:</strong>
+                <div style="margin-left: 15px; color: #666; font-size: 14px;">
+                    Username: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">admin</code><br>
+                    Password: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">123</code>
+                </div>
+            </div>
+            <div>
+                <strong style="color: #3498db;">Customer Account:</strong>
+                <div style="margin-left: 15px; color: #666; font-size: 14px;">
+                    Username: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">customer</code><br>
+                    Password: <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">456</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const accounts = [
+            {
+                username: "admin",
+                password: "123",
+                role: "admin",
+                fullName: "Administrator",
+                email: "admin@lemoncompany.com"
+            },
+            {
+                username: "customer",
+                password: "456",
+                role: "user",
+                fullName: "Customer User",
+                email: "customer@lemoncompany.com"
+            }
+        ];
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            
+            if (isLoggedIn === 'true' && currentUser) {
+                showSuccess('You are already logged in as ' + currentUser);
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Hide previous messages
+            hideMessages();
+            
+            // Validate inputs
+            if (!username || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            // Check against predefined accounts
+            const account = accounts.find(acc => acc.username === username && acc.password === password);
+            
+            if (!account) {
+                showError('Invalid username or password');
+                return;
+            }
+            
+            // Login successful - Save to localStorage
+            localStorage.setItem('lemon_isLoggedIn', 'true');
+            localStorage.setItem('lemon_currentUser', account.username);
+            localStorage.setItem('lemon_userRole', account.role);
+            localStorage.setItem('lemon_userFullName', account.fullName);
+            localStorage.setItem('lemon_userEmail', account.email);
+            localStorage.setItem('lemon_loginTime', new Date().toISOString());
+            
+            console.log('Login successful:', account);
+            
+            showSuccess('Login successful! Welcome ' + account.fullName + '! Redirecting...');
+            
+            // Redirect to home page after 1.5 seconds
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

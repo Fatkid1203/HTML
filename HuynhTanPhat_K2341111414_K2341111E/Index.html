@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Company - About Me</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Part A: Header/Menu -->
+        <div class="part-a">
+            <div class="menu">
+                <a href="index.html" class="menu-item active">About me</a>
+                
+                <div class="dropdown">
+                    <div class="menu-item">API and External</div>
+                    <div class="dropdown-content">
+                        <a href="weather.html">Weather API</a>
+                        <a href="rss.html">RSS</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="menu-item">Form & Javascript</div>
+                    <div class="dropdown-content">
+                        <a href="products.html">Products</a>
+                        <a href="providers.html">Providers</a>
+                    </div>
+                </div>
+                
+                <a href="login.html" class="menu-item" id="loginLogoutBtn">Login</a>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="middle-section">
+            <!-- Part B: Left Sidebar with Radio Buttons -->
+            <div class="part-b">
+                <h3>Vietlott Options</h3>
+                <div style="margin-top: 15px;">
+                    <div style="margin: 10px 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                            <input type="radio" name="lotteryType" value="mega645" checked 
+                                   style="margin-right: 10px; width: 18px; height: 18px; accent-color: #27ae60;"
+                                   onchange="loadVietlottData()">
+                            <span style="font-size: 14px;">Mega 6/45</span>
+                        </label>
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                            <input type="radio" name="lotteryType" value="power655" 
+                                   style="margin-right: 10px; width: 18px; height: 18px; accent-color: #e67e22;"
+                                   onchange="loadVietlottData()">
+                            <span style="font-size: 14px;">Power 6/55</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 12px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                    <p style="font-size: 12px; line-height: 1.5;">
+                        Select a lottery type to view jackpot information
+                    </p>
+                </div>
+            </div>
+
+            <!-- Part C: Main Content -->
+            <div class="part-c">
+                <div class="profile-card">
+                    <div class="avatar">
+                        <img src="/images/Tanphat.jpg" alt="Student Avatar">
+                    </div>
+                    <h1 id="studentName">Huỳnh Tấn Phát</h1>
+                    <div class="info-item">
+                        <strong>Student ID:</strong>
+                        <span id="studentId">K234111414</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Class Name:</strong>
+                        <span id="className">Web for business</span>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Part D: Right Sidebar -->
+            <div class="part-d">
+                <h3>Declaration</h3>
+                <marquee direction="down" behavior="scroll" scrollamount="3" scrolldelay="85" loop="-1" style="height: 200px; border: 1px dashed rgba(255,255,255,0.3); padding: 15px; color: white; font-size: 14px; line-height: 1.6;">
+                    I declare that all of these solutions are my own and not copied from anyone in this class
+                </marquee>
+            </div>
+        </div>
+
+        <!-- Part E: Footer -->
+        <div class="part-e">
+            <p style="align-items: left;">&copy; Designed by Huỳnh Tấn Phát. Today is Oct 31. 2025.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Handle Login/Logout button
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLoginButton();
+            loadAuthState();
+        });
+
+        function updateLoginButton() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const loginBtn = document.getElementById('loginLogoutBtn');
+            
+            if (loginBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    loginBtn.textContent = 'Logout';
+                    loginBtn.href = '#';
+                    loginBtn.onclick = function(e) {
+                        e.preventDefault();
+                        handleLogout();
+                    };
+                } else {
+                    loginBtn.textContent = 'Login';
+                    loginBtn.href = 'login.html';
+                    loginBtn.onclick = null;
+                }
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('lemon_isLoggedIn');
+                localStorage.removeItem('lemon_currentUser');
+                localStorage.removeItem('lemon_userRole');
+                localStorage.removeItem('lemon_userFullName');
+                localStorage.removeItem('lemon_userEmail');
+                localStorage.removeItem('lemon_loginTime');
+                alert('Logged out successfully!');
+                updateLoginButton();
+                loadAuthState();
+            }
+        }
+
+        function loadAuthState() {
+            const isLoggedIn = localStorage.getItem('lemon_isLoggedIn');
+            const currentUser = localStorage.getItem('lemon_currentUser');
+            const userRole = localStorage.getItem('lemon_userRole');
+            const authStatus = document.getElementById('authStatus');
+            const authUser = document.getElementById('authUser');
+            const authBtn = document.getElementById('authBtn');
+            
+            if (authStatus && authUser && authBtn) {
+                if (isLoggedIn === 'true' && currentUser) {
+                    authStatus.textContent = 'Logged in';
+                    authUser.textContent = 'User: ' + currentUser + (userRole ? ' (' + userRole + ')' : '');
+                    authBtn.textContent = 'Logout';
+                    authBtn.onclick = handleLogout;
+                } else {
+                    authStatus.textContent = 'Not logged in';
+                    authUser.textContent = '';
+                    authBtn.textContent = 'Login';
+                    authBtn.onclick = function() {
+                        window.location.href = 'login.html';
+                    };
+                }
+            }
+        }
+    </script>
+</body>
+</html>

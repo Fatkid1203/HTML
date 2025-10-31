@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon Company - RSS Feed</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Part A: Header/Menu -->
+        <div class="part-a">
+            <div class="menu">
+                <a href="index.html" class="menu-item">About me</a>
+                
+                <div class="dropdown">
+                    <div class="menu-item active">API and External</div>
+                    <div class="dropdown-content">
+                        <a href="weather.html">Weather API</a>
+                        <a href="rss.html">RSS</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown">
+                    <div class="menu-item">Form & Javascript</div>
+                    <div class="dropdown-content">
+                        <a href="products.html">Products</a>
+                        <a href="providers.html">Providers</a>
+                    </div>
+                </div>
+                
+                <div class="menu-item" onclick="toggleAuth()">Login/Logout</div>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="middle-section">
+            <!-- Part B: Left Sidebar -->
+            <div class="part-b">
+                <h3>Quick Links</h3>
+                <ul class="sidebar-links">
+                    <li><a href="index.html">📋 Profile</a></li>
+                    <li><a href="weather.html">🌤️ Weather</a></li>
+                    <li><a href="rss.html">📰 News</a></li>
+                    <li><a href="products.html">🛍️ Products</a></li>
+                    <li><a href="providers.html">🏢 Providers</a></li>
+                </ul>
+            </div>
+
+            <!-- Part C: Main Content -->
+            <div class="part-c">
+                <div class="rss-feed">
+                    <h2>📰 Latest News (RSS Feed)</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 30px;">
+                        <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">Select News Source:</label>
+                            <select id="rssSource" onchange="loadRSSFeed()" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px;">
+                                <option value="thanhnien">Thanh Niên - Giáo Dục</option>
+                                <option value="tech">Technology News</option>
+                                <option value="business">Business News</option>
+                                <option value="science">Science News</option>
+                                <option value="world">World News</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="rssContent">
+                        <div class="loading">Loading RSS feed...</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 20px;">Về RSS Feed</h3>
+                    <p style="color: #555; line-height: 1.8; margin: 0; font-size: 15px;">
+                        RSS (Really Simple Syndication) là định dạng web feed cho phép người dùng truy cập 
+                        các cập nhật từ các trang web theo cách tiêu chuẩn hóa. Trang này hiển thị tin tức 
+                        mới nhất từ Thanh Niên - chuyên mục Giáo Dục. Click vào bất kỳ tin tức nào để đọc 
+                        toàn bộ bài viết trên trang Thanh Niên.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Part D: Right Sidebar -->
+            <div class="part-d">
+                <h3>Declaration</h3>
+                <marquee direction="down" behavior="scroll" scrollamount="3" scrolldelay="85" loop="-1" style="height: 200px; border: 1px dashed rgba(255,255,255,0.3); padding: 15px; color: white; font-size: 14px; line-height: 1.6;">
+                    I declare that all of these solutions are my own and not copied from anyone in this class
+                </marquee>
+            </div>
+        </div>
+
+        <!-- Part E: Footer -->
+        <div class="part-e">
+            <p style="align-items: left;">&copy; Designed by Huỳnh Tấn Phát. Today is Oct 31. 2025.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load RSS feed on page load
+        window.addEventListener('load', function() {
+            loadRSSFeed();
+        });
+    </script>
+</body>
+</html>
